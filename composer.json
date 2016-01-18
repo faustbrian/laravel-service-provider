@@ -1,0 +1,13 @@
+{
+    "name": "draperstudio/laravel-service-provider",
+    "description": "DRY Service Provider for Laravel 5 Packages",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "~5.0|~5.1|~5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "DraperStudio\\ServiceProvider\\": "src/"
+        }
+    }
+}
