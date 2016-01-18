@@ -227,7 +227,19 @@ class ServiceProvider extends IlluminateProvider
         if (empty($files)) {
             $files = [];
 
-            foreach (glob($path.'
+            foreach (glob($path.'/*.php') as $file) {
+                $files[] = $file;
+            }
+        } else {
+            foreach ($files as $key => $value) {
+                $files[] = $path.'/'.$this->buildFileName($value);
+                unset($files[$key]);
+            }
+        }
+
+        return $files;
+    }
+    
     private function getClassFromFile($path)
     {
         $count = count($tokens = token_get_all(file_get_contents($path)));
