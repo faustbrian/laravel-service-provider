@@ -1,33 +1,25 @@
 <?php
 
-
-
 namespace DraperStudio\ServiceProvider;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider as IlluminateProvider;
 
-
 class ServiceProvider extends IlluminateProvider
 {
-
     protected $packageName;
 
-
     protected $paths = [];
-
 
     public function boot()
     {
         //
     }
 
-
     public function register()
     {
         //
     }
-
 
     public function setup($path)
     {
@@ -65,7 +57,6 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function publishConfig(array $files = [])
     {
         $files = $this->buildFilesArray('config', $files);
@@ -83,7 +74,6 @@ class ServiceProvider extends IlluminateProvider
 
         return $this;
     }
-
 
     protected function publishMigrations(array $files = [])
     {
@@ -103,7 +93,6 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function publishViews()
     {
         $destPath = $this->buildDestPath('views', $this->packageName);
@@ -117,7 +106,6 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function publishAssets()
     {
         $destPath = $this->buildDestPath('assets', $this->packageName);
@@ -130,7 +118,6 @@ class ServiceProvider extends IlluminateProvider
 
         return $this;
     }
-
 
     protected function publishSeeds(array $files = [])
     {
@@ -150,14 +137,12 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function loadViews()
     {
         $this->loadViewsFrom($this->paths['views']['src'], $this->packageName);
 
         return $this;
     }
-
 
     protected function loadTranslations()
     {
@@ -168,7 +153,6 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function loadRoutes()
     {
         if (!$this->app->routesAreCached()) {
@@ -178,14 +162,12 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     protected function publish(array $paths, $group = null)
     {
         $this->publishes($paths, $group);
 
         return $this;
     }
-
 
     protected function mergeConfig($file = null)
     {
@@ -201,7 +183,6 @@ class ServiceProvider extends IlluminateProvider
         return $this;
     }
 
-
     private function buildFileName($file)
     {
         $file = basename($file);
@@ -213,12 +194,10 @@ class ServiceProvider extends IlluminateProvider
         return $file;
     }
 
-
     private function buildDestPath($type, $args)
     {
         return vsprintf($this->paths[$type]['dest'], $args);
     }
-
 
     private function buildFilesArray($type, $files)
     {
@@ -239,7 +218,7 @@ class ServiceProvider extends IlluminateProvider
 
         return $files;
     }
-    
+
     private function getClassFromFile($path)
     {
         $count = count($tokens = token_get_all(file_get_contents($path)));
