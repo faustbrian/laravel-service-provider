@@ -1,232 +1,344 @@
 <?php
 
+/*
+ * This file is part of Laravel Service Provider.
+ *
+ * (c) DraperStudio <hello@draperstudio.tech>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace DraperStudio\ServiceProvider;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\ServiceProvider as IlluminateProvider;
+use Illuminate\Contracts\Foundation\Application;
 
-class ServiceProvider extends IlluminateProvider
+/**
+ * Class ServiceProvider.
+ */
+abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
+    use FilesTrait;
+
+    protected $packagePath;
     protected $packageName;
 
-    protected $paths = [];
-
+    /**
+     * Bootstrap the application services.
+     */
     public function boot()
     {
         //
     }
 
+    /**
+     * Register the application services.
+     */
     public function register()
     {
-        //
+        $this->packagePath = $this->getPackagePath();
+        $this->packageName = $this->getPackageName();
+
+        $this->registerAssetPublisher();
+
+        $this->registerConfigPublisher();
+
+        $this->registerViewPublisher();
+
+        $this->registerMigrationPublisher();
+
+        $this->registerSeedPublisher();
+
+        $this->registerTranslationPublisher();
+
+        $this->registerViewLoader();
+
+        $this->registerRouteLoader();
+
+        $this->registerTranslationLoader();
     }
 
-    public function setup($path)
+    /**
+     * Register configuration paths to be published by the publish command.
+     */
+    protected function publishConfig()
     {
-        $this->paths = [
-            'migrations' => [
-                'src' => $path.'/../database/migrations',
-                'dest' => database_path('/migrations/%s_%s'),
-            ],
-            'seeds' => [
-                'src' => $path.'/../database/seeds',
-                'dest' => database_path('/seeds/%s'),
-            ],
-            'config' => [
-                'src' => $path.'/../config',
-                'dest' => config_path('%s'),
-            ],
-            'views' => [
-                'src' => $path.'/../resources/views',
-                'dest' => base_path('resources/views/vendor/%s'),
-            ],
-            'translations' => [
-                'src' => $path.'/../resources/lang',
-                'dest' => base_path('resources/lang/%s'),
-            ],
-            'assets' => [
-                'src' => $path.'/../public/assets',
-                'dest' => public_path('vendor/%s'),
-            ],
-            'routes' => [
-                'src' => $path.'/Http/routes.php',
-                'dest' => null,
-            ],
-        ];
-
-        return $this;
+        $this->publishes(
+            $this->app['publisher.config']->getFileList($this->packagePath),
+            'config'
+        );
     }
 
-    protected function publishConfig(array $files = [])
+    /**
+     * Register migration paths to be published by the publish command.
+     */
+    protected function publishMigrations()
     {
-        $files = $this->buildFilesArray('config', $files);
-
-        $paths = [];
-        foreach ($files as $file) {
-            $destPath = $this->buildDestPath('config', [$this->buildFileName($file)]);
-
-            if (!File::exists($destPath)) {
-                $paths[$file] = $destPath;
-            }
-        }
-
-        $this->publishes($paths, 'config');
-
-        return $this;
+        $this->publishes(
+            $this->app['publisher.migrations']->getFileList($this->packagePath),
+            'migrations'
+        );
     }
 
-    protected function publishMigrations(array $files = [])
-    {
-        $files = $this->buildFilesArray('migrations', $files);
-
-        $paths = [];
-        foreach ($files as $file) {
-            if (!class_exists($this->getClassFromFile($file))) {
-                $paths[$file] = $this->buildDestPath('migrations', [
-                    date('Y_m_d_His', time()), $this->buildFileName($file),
-                ]);
-            }
-        }
-
-        $this->publishes($paths, 'migrations');
-
-        return $this;
-    }
-
+    /**
+     * Register views paths to be published by the publish command.
+     */
     protected function publishViews()
     {
-        $destPath = $this->buildDestPath('views', $this->packageName);
-
-        if (!File::exists($destPath)) {
-            $this->publishes([
-                $this->paths['views']['src'] => $destPath,
-            ], 'views');
-        }
-
-        return $this;
+        $this->publishes(
+            $this->app['publisher.views']->getFileList($this->packagePath),
+            'views'
+        );
     }
 
+    /**
+     * Register assets paths to be published by the publish command.
+     */
     protected function publishAssets()
     {
-        $destPath = $this->buildDestPath('assets', $this->packageName);
-
-        if (!File::exists($destPath)) {
-            $this->publishes([
-                $this->paths['assets']['src'] => $destPath,
-            ], 'public');
-        }
-
-        return $this;
+        $this->publishes(
+            $this->app['publisher.assets']->getFileList($this->packagePath),
+            'assets'
+        );
     }
 
-    protected function publishSeeds(array $files = [])
+    /**
+     * Register seeds paths to be published by the publish command.
+     */
+    protected function publishSeeds()
     {
-        $files = $this->buildFilesArray('seeds', $files);
-
-        $paths = [];
-        foreach ($files as $file) {
-            $destPath = $this->buildDestPath('seeds', [$this->buildFileName($file)]);
-
-            if (!File::exists($destPath)) {
-                $paths[$file] = $destPath;
-            }
-        }
-
-        $this->publishes($paths, 'seeds');
-
-        return $this;
+        $this->publishes(
+            $this->app['publisher.seeds']->getFileList($this->packagePath),
+            'seeds'
+        );
     }
 
+    /**
+     * Register a view file namespace.
+     */
     protected function loadViews()
     {
-        $this->loadViewsFrom($this->paths['views']['src'], $this->packageName);
-
-        return $this;
+        $this->loadViewsFrom(
+            $this->app['loader.views']->getFileList($this->packagePath),
+            $this->packageName
+        );
     }
 
+    /**
+     * Register a translation file namespace.
+     */
     protected function loadTranslations()
     {
         $this->loadTranslationsFrom(
-            $this->paths['translations']['src'], $this->packageName
+            $this->app['loader.translations']->getFileList($this->packagePath),
+            $this->packageName
         );
-
-        return $this;
     }
 
+    /**
+     * Register a route file namespace.
+     */
     protected function loadRoutes()
     {
         if (!$this->app->routesAreCached()) {
-            require $this->paths['routes']['src'];
+            require $this->app['loader.routes']->getFileList($this->packagePath);
         }
-
-        return $this;
     }
 
-    protected function publish(array $paths, $group = null)
+    /**
+     * Merge the given configuration with the existing configuration.
+     */
+    protected function mergeConfig()
     {
-        $this->publishes($paths, $group);
-
-        return $this;
-    }
-
-    protected function mergeConfig($file = null)
-    {
-        if (empty($file)) {
-            $file = $this->packageName;
-        }
-
         $this->mergeConfigFrom(
-            $this->paths['config']['src'].'/'.$this->buildFileName($file),
+            $this->packagePath.'/resources/config/'.$this->getFileName($this->packageName),
             $this->packageName
         );
-
-        return $this;
     }
 
-    private function buildFileName($file)
+    /**
+     * Get the default package path.
+     *
+     * @return string
+     */
+    protected function getPackagePath()
     {
-        $file = basename($file);
-
-        if (!ends_with($file, '.php')) {
-            $file = $file.'.php';
-        }
-
-        return $file;
+        return dirname((new \ReflectionClass($this))->getFileName()).'/..';
     }
 
-    private function buildDestPath($type, $args)
+    /**
+     * Get the default package name.
+     *
+     * @return string
+     */
+    abstract protected function getPackageName();
+
+    /**
+     * Register the asset publisher service and command.
+     */
+    protected function registerAssetPublisher()
     {
-        return vsprintf($this->paths[$type]['dest'], $args);
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
+
+        $this->app->singleton('publisher.asset', function (Application $app) use ($packagePath, $packageName) {
+            $publicPath = $app->publicPath();
+
+            $publisher = new Publisher\AssetPublisher($app->make('files'), $publicPath);
+
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
     }
 
-    private function buildFilesArray($type, $files)
+    /**
+     * Register the configuration publisher class and command.
+     */
+    protected function registerConfigPublisher()
     {
-        $path = $this->paths[$type]['src'];
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
 
-        if (empty($files)) {
-            $files = [];
+        $this->app->singleton('publisher.config', function (Application $app) use ($packagePath, $packageName) {
+            $path = $app->configPath();
 
-            foreach (glob($path.'/*.php') as $file) {
-                $files[] = $file;
-            }
-        } else {
-            foreach ($files as $key => $value) {
-                $files[] = $path.'/'.$this->buildFileName($value);
-                unset($files[$key]);
-            }
-        }
+            $publisher = new Publisher\ConfigPublisher($app->make('files'), $path);
 
-        return $files;
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
     }
 
-    private function getClassFromFile($path)
+    /**
+     * Register the view publisher class and command.
+     */
+    protected function registerViewPublisher()
     {
-        $count = count($tokens = token_get_all(file_get_contents($path)));
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
 
-        for ($i = 2; $i < $count; ++$i) {
-            if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) {
-                return $tokens[$i][1];
-            }
-        }
+        $this->app->singleton('publisher.views', function (Application $app) use ($packagePath, $packageName) {
+            $viewPath = $app->basePath().'/resources/views/vendor';
+
+            $publisher = new Publisher\ViewPublisher($app->make('files'), $viewPath);
+
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the migration publisher class and command.
+     */
+    protected function registerMigrationPublisher()
+    {
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
+
+        $this->app->singleton('publisher.migrations', function (Application $app) use ($packagePath, $packageName) {
+            $viewPath = $app->databasePath().'/migrations';
+
+            $publisher = new Publisher\MigrationPublisher($app->make('files'), $viewPath);
+
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the migration publisher class and command.
+     */
+    protected function registerSeedPublisher()
+    {
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
+
+        $this->app->singleton('publisher.seeds', function (Application $app) use ($packagePath, $packageName) {
+            $viewPath = $app->databasePath().'/seeds';
+
+            $publisher = new Publisher\SeedPublisher($app->make('files'), $viewPath);
+
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the migration publisher class and command.
+     */
+    protected function registerTranslationPublisher()
+    {
+        $packagePath = $this->packagePath;
+        $packageName = $this->packageName;
+
+        $this->app->singleton('publisher.translations', function (Application $app) use ($packagePath, $packageName) {
+            $viewPath = $app->basePath().'/resources/lang/vendor';
+
+            $publisher = new Publisher\TranslationPublisher($app->make('files'), $viewPath);
+
+            $publisher->setPackagePath($packagePath);
+            $publisher->setPackageName($packageName);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the view loader class and command.
+     */
+    protected function registerViewLoader()
+    {
+        $packagePath = $this->packagePath;
+
+        $this->app->singleton('loader.views', function (Application $app) use ($packagePath) {
+            $publisher = new Loader\ViewLoader($app->make('files'));
+
+            $publisher->setPackagePath($packagePath);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the view loader class and command.
+     */
+    protected function registerRouteLoader()
+    {
+        $packagePath = $this->packagePath;
+
+        $this->app->singleton('loader.routes', function (Application $app) use ($packagePath) {
+            $publisher = new Loader\RouteLoader($app->make('files'));
+
+            $publisher->setPackagePath($packagePath);
+
+            return $publisher;
+        });
+    }
+
+    /**
+     * Register the view loader class and command.
+     */
+    protected function registerTranslationLoader()
+    {
+        $packagePath = $this->packagePath;
+
+        $this->app->singleton('loader.translations', function (Application $app) use ($packagePath) {
+            $publisher = new Loader\TranslationLoader($app->make('files'));
+
+            $publisher->setPackagePath($packagePath);
+
+            return $publisher;
+        });
     }
 }
