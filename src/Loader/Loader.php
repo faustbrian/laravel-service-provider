@@ -15,8 +15,6 @@ use Illuminate\Filesystem\Filesystem;
 
 abstract class Loader
 {
-    use \DraperStudio\ServiceProvider\FilesTrait;
-
     /**
      * The filesystem instance.
      *
