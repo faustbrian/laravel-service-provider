@@ -19,8 +19,6 @@ use Illuminate\Contracts\Foundation\Application;
  */
 abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    use FilesTrait;
-
     protected $packagePath;
     protected $packageName;
 
@@ -57,6 +55,26 @@ abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->registerRouteLoader();
 
         $this->registerTranslationLoader();
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            'publisher.asset',
+            'publisher.config',
+            'publisher.views',
+            'publisher.migrations',
+            'publisher.seeds',
+            'publisher.translations',
+            'loader.views',
+            'loader.routes',
+            'loader.translations',
+        ];
     }
 
     /**
@@ -340,5 +358,21 @@ abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
             return $publisher;
         });
+    }
+
+    /**
+     * @param $file
+     *
+     * @return string
+     */
+    protected function getFileName($file)
+    {
+        $file = basename($file);
+
+        if (!ends_with($file, '.php')) {
+            $file = $file.'.php';
+        }
+
+        return $file;
     }
 }

@@ -11,7 +11,7 @@
 
 namespace DraperStudio\ServiceProvider\Publisher;
 
-use File;
+use InvalidArgumentException;
 
 class ConfigPublisher extends Publisher
 {
@@ -46,7 +46,7 @@ class ConfigPublisher extends Publisher
                     ]);
 
                     // if the destination doesn't exist we can add the file to the queue
-                    if (!File::exists($destinationPath)) {
+                    if (!$this->files->exists($destinationPath)) {
                         $paths[$file] = $destinationPath;
                     }
                 }

@@ -11,6 +11,8 @@
 
 namespace DraperStudio\ServiceProvider\Publisher;
 
+use InvalidArgumentException;
+
 class MigrationPublisher extends Publisher
 {
     /**
