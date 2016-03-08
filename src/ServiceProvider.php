@@ -116,7 +116,7 @@ abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function publishAssets()
     {
         $this->publishes(
-            $this->app['publisher.assets']->getFileList($this->packagePath),
+            $this->app['publisher.asset']->getFileList($this->packagePath),
             'assets'
         );
     }
