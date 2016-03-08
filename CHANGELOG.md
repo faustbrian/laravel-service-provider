@@ -2,6 +2,10 @@
 
 All Notable changes to `draperstudio/laravel-service-provider` will be documented in this file.
 
+## 0.1.3 (released 2016-03-08)
+
+- Fix typo of `publisher.asset` call
+
 ## 0.1.2 (released 2016-03-05)
 
 - Removed `FilesTrait` from Loader
