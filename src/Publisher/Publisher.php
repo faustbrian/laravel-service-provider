@@ -1,0 +1,86 @@
+<?php
+
+namespace BrianFaust\ServiceProvider\Publisher;
+
+use Illuminate\Filesystem\Filesystem;
+
+abstract class Publisher
+{
+    protected $files;
+
+    protected $publishPath;
+
+    protected $packagePath;
+
+    protected $destinationPaths;
+
+    public function __construct(Filesystem $files, $publishPath)
+    {
+        $this->files = $files;
+        $this->publishPath = $publishPath;
+
+        $this->destinationPaths = [
+            'migrations' => database_path('/migrations/%s_%s'),
+            'seeds' => database_path('/seeds/%s'),
+            'config' => config_path('%s'),
+            'views' => base_path('resources/views/vendor/%s'),
+            'translations' => base_path('resources/lang/%s'),
+            'assets' => public_path('vendor/%s'),
+            'routes' => null,
+        ];
+    }
+
+    public function getFileList($package)
+    {
+        return $this->getSource($package, $this->packagePath);
+    }
+
+    public function setPackagePath($packagePath)
+    {
+        $this->packagePath = $packagePath;
+    }
+
+    public function setPackageName($packageName)
+    {
+        $this->packageName = $packageName;
+    }
+
+    abstract protected function getSource($packagePath);
+
+    protected function getFileName($file)
+    {
+        $file = basename($file);
+
+        if (!ends_with($file, '.php')) {
+            $file = $file.'.php';
+        }
+
+        return $file;
+    }
+
+    protected function getDestinationPath($type, $args)
+    {
+        return vsprintf($this->destinationPaths[$type], $args);
+    }
+
+    protected function getSourceFiles($path)
+    {
+        $files = [];
+        foreach (glob($path.'/*.php') as $file) {
+            $files[] = $file;
+        }
+
+        return $files;
+    }
+
+    protected function getClassFromFile($path)
+    {
+        $count = count($tokens = token_get_all(file_get_contents($path)));
+
+        for ($i = 2; $i < $count; ++$i) {
+            if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) {
+                return $tokens[$i][1];
+            }
+        }
+    }
+}
