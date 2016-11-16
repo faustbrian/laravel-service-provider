@@ -19,13 +19,17 @@ class ServiceProvider extends \BrianFaust\ServiceProvider\ServiceProvider
 {
     public function boot()
     {
-        $this->publishMigrations()
-        $this->publishConfig()
-        $this->publishViews()
-        $this->publishAssets()
-        $this->loadViews()
-        $this->loadTranslations()
-        $this->mergeConfig(');
+        $this->publishMigrations();
+        $this->publishConfig();
+        $this->publishViews();
+        $this->publishAssets();
+        $this->loadViews();
+        $this->loadTranslations();
+    }
+    
+    public function register()
+    {
+        $this->mergeConfig();
     }
 }
 ```
