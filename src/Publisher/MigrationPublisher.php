@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Laravel Service Provider.
+ *
+ * (c) Brian Faust <hello@brianfaust.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BrianFaust\ServiceProvider\Publisher;
 
 use InvalidArgumentException;
@@ -25,7 +34,7 @@ class MigrationPublisher extends Publisher
                 // iterate through all files
                 foreach ($files as $file) {
                     // if the destination doesn't exist we can add the file to the queue
-                    if (!class_exists($this->getClassFromFile($file))) {
+                    if (! class_exists($this->getClassFromFile($file))) {
                         $paths[$file] = $this->getDestinationPath('migrations', [
                             date('Y_m_d_His', time()), $this->getFileName($file),
                         ]);
