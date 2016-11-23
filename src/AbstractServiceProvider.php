@@ -4,7 +4,7 @@ namespace BrianFaust\ServiceProvider;
 
 use Illuminate\Contracts\Foundation\Application;
 
-abstract class ServiceProvider extends \Illuminate\Support\ServiceProvider
+abstract class AbstractServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     protected $packagePath;
     protected $packageName;
