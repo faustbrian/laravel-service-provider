@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Laravel Service Provider.
+ *
+ * (c) Brian Faust <hello@brianfaust.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BrianFaust\ServiceProvider;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -110,7 +119,7 @@ abstract class AbstractServiceProvider extends \Illuminate\Support\ServiceProvid
 
     protected function loadRoutes()
     {
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             require $this->app['loader.routes']->getFileList($this->packagePath);
         }
     }
@@ -275,7 +284,7 @@ abstract class AbstractServiceProvider extends \Illuminate\Support\ServiceProvid
     {
         $file = basename($file);
 
-        if (!ends_with($file, '.php')) {
+        if (! ends_with($file, '.php')) {
             $file = $file.'.php';
         }
 

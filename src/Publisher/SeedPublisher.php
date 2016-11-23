@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Laravel Service Provider.
+ *
+ * (c) Brian Faust <hello@brianfaust.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace BrianFaust\ServiceProvider\Publisher;
 
 use InvalidArgumentException;
@@ -29,7 +38,7 @@ class SeedPublisher extends Publisher
                     ]);
 
                     // if the destination doesn't exist we can add the file to the queue
-                    if (!$this->files->exists($destinationPath)) {
+                    if (! $this->files->exists($destinationPath)) {
                         $paths[$file] = $destinationPath;
                     }
                 }
