@@ -1,25 +1,16 @@
 {
     "name": "faustbrian/laravel-service-provider",
     "description": "DRY Service Provider for Laravel 5 Packages",
-    "keywords": [
-        "laravel",
-        "framework",
-        "Laravel-messageable",
-        "Laravel Messageable",
-        "Brian Faust",
-        "faustbrian",
-        "laravel-service-provider"
-    ],
+    "keywords": ["laravel", "framework", "Laravel-Service-Provider", "Laravel Service Provider", "Brian Faust", "faustbrian"],
     "license": "MIT",
     "authors": [{
         "name": "Brian Faust",
         "email": "hello@brianfaust.de",
-        "homepage": "https://brianfaust.de",
-        "role": "Developer"
+        "homepage": "https://brianfaust.de"
     }],
     "require": {
-        "php": "^5.6.4 || ^7.0",
-        "illuminate/support": "5.2.* || 5.3.*"
+        "php": "^7.0",
+        "illuminate/support": "5.3.*"
     },
     "require-dev": {
         "graham-campbell/testbench": "^3.2",
