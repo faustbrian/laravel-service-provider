@@ -21,6 +21,7 @@ class MigrationPublisher extends Publisher
             "{$packagePath}/resources/database/migrations",
             "{$packagePath}/resources/migrations",
             "{$packagePath}/migrations",
+            "{$packagePath}/database/migrations",
         ];
 
         // iterate through all possible locations
