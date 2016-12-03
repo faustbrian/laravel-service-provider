@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace BrianFaust\ServiceProvider;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -18,11 +20,11 @@ abstract class AbstractServiceProvider extends \Illuminate\Support\ServiceProvid
     protected $packagePath;
     protected $packageName;
 
-    public function boot()
+    public function boot(): void
     {
     }
 
-    public function register()
+    public function register(): void
     {
         $this->packagePath = $this->getPackagePath();
         $this->packageName = $this->getPackageName();
@@ -46,7 +48,7 @@ abstract class AbstractServiceProvider extends \Illuminate\Support\ServiceProvid
         $this->registerTranslationLoader();
     }
 
-    public function provides()
+    public function provides(): array
     {
         return [
             'publisher.asset',

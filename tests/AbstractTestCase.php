@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace BrianFaust\Tests\ServiceProvider;
 
-use PHPUnit_Framework_TestCase as TestCase;
-
-abstract class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
 }

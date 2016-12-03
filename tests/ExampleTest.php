@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace BrianFaust\Tests\ServiceProvider;
 
 class ExampleTest extends AbstractTestCase
 {
-    public function testTrueIsTrue()
+    public function testTrueIsTrue(): void
     {
         $this->assertTrue(true);
     }
