@@ -26,7 +26,7 @@ use InvalidArgumentException;
 
 class MigrationPublisher extends Publisher
 {
-    protected function getSource($packagePath)
+    protected function getSource($packagePath): array
     {
         $sources = [
             "{$packagePath}/resources/database/migrations",

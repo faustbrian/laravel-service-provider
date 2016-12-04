@@ -50,24 +50,24 @@ abstract class Publisher
         ];
     }
 
-    public function getFileList($package)
+    public function getFileList($package): array
     {
         return $this->getSource($package, $this->packagePath);
     }
 
-    public function setPackagePath($packagePath)
+    public function setPackagePath($packagePath): void
     {
         $this->packagePath = $packagePath;
     }
 
-    public function setPackageName($packageName)
+    public function setPackageName($packageName): void
     {
         $this->packageName = $packageName;
     }
 
-    abstract protected function getSource($packagePath);
+    abstract protected function getSource($packagePath): array;
 
-    protected function getFileName($file)
+    protected function getFileName($file): string
     {
         $file = basename($file);
 
@@ -78,12 +78,12 @@ abstract class Publisher
         return $file;
     }
 
-    protected function getDestinationPath($type, $args)
+    protected function getDestinationPath($type, $args): string
     {
         return vsprintf($this->destinationPaths[$type], $args);
     }
 
-    protected function getSourceFiles($path)
+    protected function getSourceFiles($path): array
     {
         $files = [];
         foreach (glob($path.'/*.php') as $file) {
@@ -93,7 +93,7 @@ abstract class Publisher
         return $files;
     }
 
-    protected function getClassFromFile($path)
+    protected function getClassFromFile($path): ?string
     {
         $count = count($tokens = token_get_all(file_get_contents($path)));
 

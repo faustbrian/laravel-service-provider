@@ -26,7 +26,7 @@ use InvalidArgumentException;
 
 class TranslationLoader extends Loader
 {
-    protected function getSource($packagePath)
+    protected function getSource($packagePath): string
     {
         $sources = [
             "{$packagePath}/resources/lang",

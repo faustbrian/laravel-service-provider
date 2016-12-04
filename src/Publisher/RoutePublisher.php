@@ -26,7 +26,7 @@ use InvalidArgumentException;
 
 class RoutePublisher extends Publisher
 {
-    protected function getSource($packagePath)
+    protected function getSource($packagePath): array
     {
         $sources = [
             "{$packagePath}/resources/routes",

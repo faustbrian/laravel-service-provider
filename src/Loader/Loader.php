@@ -35,15 +35,15 @@ abstract class Loader
         $this->files = $files;
     }
 
-    public function getFileList($package)
+    public function getFileList($package): string
     {
         return $this->getSource($package, $this->packagePath);
     }
 
-    public function setPackagePath($packagePath)
+    public function setPackagePath($packagePath): void
     {
         $this->packagePath = $packagePath;
     }
 
-    abstract protected function getSource($packagePath);
+    abstract protected function getSource($packagePath): string;
 }

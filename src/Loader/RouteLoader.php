@@ -26,7 +26,7 @@ use InvalidArgumentException;
 
 class RouteLoader extends Loader
 {
-    protected function getSource($packagePath)
+    protected function getSource($packagePath): string
     {
         $sources = [
             "{$packagePath}/resources/routes.php",
