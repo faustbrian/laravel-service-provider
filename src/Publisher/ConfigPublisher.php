@@ -40,7 +40,7 @@ class ConfigPublisher extends Publisher
                     ]);
 
                     // if the destination doesn't exist we can add the file to the queue
-                    if (!$this->files->exists($destinationPath)) {
+                    if (! $this->files->exists($destinationPath)) {
                         $paths[$file] = $destinationPath;
                     }
                 }
