@@ -89,7 +89,7 @@ abstract class Publisher
     {
         $count = count($tokens = token_get_all(file_get_contents($path)));
 
-        for ($i = 2; $i < $count; ++$i) {
+        for ($i = 2; $i < $count; $i++) {
             if ($tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) {
                 return $tokens[$i][1];
             }
