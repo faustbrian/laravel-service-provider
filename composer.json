@@ -10,12 +10,12 @@
     }],
     "require": {
         "php": "^7.1",
-        "illuminate/support": "5.3.* || 5.4.*"
+        "illuminate/support": "5.4.* || 5.5.*"
     },
     "require-dev": {
-        "graham-campbell/testbench": "^3.2",
-        "mockery/mockery": "^0.9.5",
-        "phpunit/phpunit": "^5.6"
+        "graham-campbell/testbench": "^4.0",
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^6.5"
     },
     "autoload": {
         "psr-4": {
