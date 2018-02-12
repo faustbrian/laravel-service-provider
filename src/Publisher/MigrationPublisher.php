@@ -38,7 +38,7 @@ class MigrationPublisher extends Publisher
                 // iterate through all files
                 foreach ($files as $file) {
                     // if the destination doesn't exist we can add the file to the queue
-                    if (! class_exists($this->getClassFromFile($file))) {
+                    if (!class_exists($this->getClassFromFile($file))) {
                         $paths[$file] = $this->getDestinationPath('migrations', [
                             date('Y_m_d_His', time()), $this->getFileName($file),
                         ]);
