@@ -63,7 +63,7 @@ abstract class Publisher
     {
         $file = basename($file);
 
-        if (! ends_with($file, '.php')) {
+        if (!ends_with($file, '.php')) {
             $file = $file.'.php';
         }
 
