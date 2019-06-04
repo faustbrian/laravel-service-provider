@@ -1,16 +1,23 @@
 {
     "name": "artisanry/service-provider",
     "description": "DRY Service Provider for Laravel 5 Packages",
-    "keywords": ["laravel", "framework", "Laravel-Service-Provider", "Laravel Service Provider"],
+    "keywords": [
+        "laravel",
+        "framework",
+        "Laravel-Service-Provider",
+        "Laravel Service Provider"
+    ],
     "license": "MIT",
-    "authors": [{
-        "name": "Brian Faust",
-        "email": "hello@basecode.sh",
-        "homepage": "https://basecode.sh"
-    }],
+    "authors": [
+        {
+            "name": "Brian Faust",
+            "email": "hello@basecode.sh",
+            "homepage": "https://basecode.sh"
+        }
+    ],
     "require": {
-        "php": "^7.1",
-        "illuminate/support": "^5.6"
+        "php": "^7.2",
+        "illuminate/support": "^5.8"
     },
     "require-dev": {
         "graham-campbell/testbench": "^4.0",
