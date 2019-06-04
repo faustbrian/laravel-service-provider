@@ -1,6 +1,6 @@
 # Changelog
 
-All Notable changes to `faustbrian/laravel-service-provider` will be documented in this file.
+All Notable changes to `artisanry/service-provider` will be documented in this file.
 
 ## 1.0.2 (30/11/2016)
 - Add new path to MigrationPublisher

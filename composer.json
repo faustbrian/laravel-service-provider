@@ -1,12 +1,12 @@
 {
-    "name": "faustbrian/laravel-service-provider",
+    "name": "artisanry/service-provider",
     "description": "DRY Service Provider for Laravel 5 Packages",
-    "keywords": ["laravel", "framework", "Laravel-Service-Provider", "Laravel Service Provider", "Brian Faust", "faustbrian"],
+    "keywords": ["laravel", "framework", "Laravel-Service-Provider", "Laravel Service Provider"],
     "license": "MIT",
     "authors": [{
         "name": "Brian Faust",
-        "email": "hello@brianfaust.me",
-        "homepage": "https://brianfaust.me"
+        "email": "hello@basecode.sh",
+        "homepage": "https://basecode.sh"
     }],
     "require": {
         "php": "^7.1",
@@ -19,12 +19,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BrianFaust\\ServiceProvider\\": "src/"
+            "Artisanry\\ServiceProvider\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BrianFaust\\Tests\\ServiceProvider\\": "tests"
+            "Artisanry\\Tests\\ServiceProvider\\": "tests"
         }
     },
     "config": {

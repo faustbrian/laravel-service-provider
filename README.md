@@ -1,16 +1,16 @@
 # Laravel Service Provider
 
-[![Build Status](https://img.shields.io/travis/faustbrian/Laravel-Service-Provider/master.svg?style=flat-square)](https://travis-ci.org/faustbrian/Laravel-Service-Provider)
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/faustbrian/laravel-service-provider.svg?style=flat-square)]()
-[![Latest Version](https://img.shields.io/github/release/faustbrian/Laravel-Service-Provider.svg?style=flat-square)](https://github.com/faustbrian/Laravel-Service-Provider/releases)
-[![License](https://img.shields.io/packagist/l/faustbrian/Laravel-Service-Provider.svg?style=flat-square)](https://packagist.org/packages/faustbrian/Laravel-Service-Provider)
+[![Build Status](https://img.shields.io/travis/artisanry/Service-Provider/master.svg?style=flat-square)](https://travis-ci.org/artisanry/Service-Provider)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/artisanry/service-provider.svg?style=flat-square)]()
+[![Latest Version](https://img.shields.io/github/release/artisanry/Service-Provider.svg?style=flat-square)](https://github.com/artisanry/Service-Provider/releases)
+[![License](https://img.shields.io/packagist/l/artisanry/Service-Provider.svg?style=flat-square)](https://packagist.org/packages/artisanry/Service-Provider)
 
 ## Installation
 
 Require this package, with [Composer](https://getcomposer.org/), in the root directory of your project.
 
 ``` bash
-$ composer require faustbrian/laravel-service-provider
+$ composer require artisanry/service-provider
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ $ composer require faustbrian/laravel-service-provider
 
 namespace Vendor\Package;
 
-class ServiceProvider extends \BrianFaust\ServiceProvider\ServiceProvider
+class ServiceProvider extends \Artisanry\ServiceProvider\ServiceProvider
 {
     public function boot()
     {
@@ -55,7 +55,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
-If you discover a security vulnerability within this package, please send an e-mail to hello@brianfaust.me. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within this package, please send an e-mail to hello@basecode.sh. All security vulnerabilities will be promptly addressed.
 
 ## Credits
 
@@ -64,4 +64,4 @@ If you discover a security vulnerability within this package, please send an e-m
 
 ## License
 
-[MIT](LICENSE) © [Brian Faust](https://brianfaust.me)
+[MIT](LICENSE) © [Brian Faust](https://basecode.sh)
